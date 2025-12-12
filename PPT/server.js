@@ -5,6 +5,7 @@ import { Server as SocketServer } from 'socket.io';
 import db from './database/connection.js';
 import { Usuario, Partida } from './models/index.js';
 import authRouter from './routes/auth.js';
+import partidasRouter from './routes/partidas.js';
 
 class Server {
 
@@ -54,6 +55,7 @@ class Server {
 
     routes() {
         this.app.use( this.paths.auth, authRouter );
+        this.app.use( this.paths.partidas, partidasRouter );
     }
 
     sockets() {

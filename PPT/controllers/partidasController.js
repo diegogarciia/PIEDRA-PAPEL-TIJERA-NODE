@@ -24,9 +24,18 @@ const crearPartida = async(req = request, res = response) => {
             });
         }
 
+        let id_rival = null;
+        let estadoPartida = 'pendiente';
+
+        if ( contra_maquina === true ) {
+            id_rival = 100;            
+            estadoPartida = 'jugando'; 
+        }
+
         const nuevaPartida = await Partida.create({
             id_jugador1: id_usuario,
-            estado: 'pendiente' 
+            id_jugador2: id_rival,     
+            estado: estadoPartida     
         });
 
         res.json({
