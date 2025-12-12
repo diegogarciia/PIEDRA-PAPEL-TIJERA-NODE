@@ -1,4 +1,4 @@
-#Piedra, papel, tijera.
+Piedra, papel, tijera.
 
 Realiza un servicio en Node que permita jugar contra la máquina o contra otro humano a piedra,
 papel, tijera.
