@@ -2,6 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import { createServer } from 'http';
 import { Server as SocketServer } from 'socket.io';
+import db from './database/connection.js';
+import { Usuario, Partida } from './models/index.js';
 
 class Server {
 
@@ -10,7 +12,6 @@ class Server {
         this.port = process.env.PORT || 8080;
 
         this.server = createServer( this.app );
-        
         this.io = new SocketServer( this.server, {
             cors: {
                 origin: "*",
@@ -24,6 +25,7 @@ class Server {
             usuarios: '/api/usuarios'
         }
 
+        this.conectarDB();
 
         this.middlewares();
         this.routes();
@@ -32,19 +34,24 @@ class Server {
     }
 
     async conectarDB() {
-
+        try {
+            await db.authenticate();
+            console.log('Base de datos online');
+            
+            await db.sync({ alter: true }); 
+            
+        } catch (error) {
+            console.error('Error al conectar a la BD:', error);
+        }
     }
 
     middlewares() {
         this.app.use( cors() );
-
         this.app.use( express.json() );
-
         this.app.use( express.static('public') );
     }
 
     routes() {
-
     }
 
     sockets() {
