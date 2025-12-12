@@ -1,4 +1,5 @@
 #Piedra, papel, tijera.
+
 Realiza un servicio en Node que permita jugar contra la máquina o contra otro humano a piedra,
 papel, tijera.
 Se debe jugar al mejor de cinco tiradas (el que gane 3, gana la partida). Cada usuario solo puede
