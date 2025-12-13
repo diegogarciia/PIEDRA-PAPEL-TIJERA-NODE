@@ -7,7 +7,8 @@ const txtUserId = document.getElementById('txtUserId');
 const btnLogin = document.getElementById('btnLogin');
 const cardLogin = document.querySelector('.card:nth-child(2)'); 
 const menuAcciones = document.getElementById('menuAcciones');
-const btnCrear = document.getElementById('btnCrearCPU'); 
+const btnCrear = document.getElementById('btnCrearCPU');
+const botonesJugada = document.querySelectorAll('.btn-jugada'); 
 
 btnLogin.addEventListener('click', () => {
     const id = txtUserId.value;
