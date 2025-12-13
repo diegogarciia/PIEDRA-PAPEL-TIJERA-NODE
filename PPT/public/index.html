@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Piedra-Papel-Tijera</title>
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Piedra-Papel-Tijera</h1>
+        
+        <div class="card" id="cardLogin">
+            <h3>1. Identifícate</h3>
+            <p>Introduce tu ID de usuario para empezar:</p>
+            <input type="number" id="txtUserId" placeholder="Ej: 1">
+            <button id="btnLogin" class="btn-primary">Entrar</button>
+        </div>
+
+        <div class="card hidden" id="menuAcciones">
+            <h3>2. ¿Qué quieres hacer?</h3>
+            
+            <div class="btn-group">
+                <button id="btnCrearCPU" class="btn-success">Vs CPU</button>
+                
+                <button id="btnCrearHuman" class="btn-primary">Vs Humano</button>
+            </div>
+            
+            <hr>
+
+            <div class="join-section">
+                <p>O únete a una partida existente:</p>
+                <input type="text" id="txtPartidaId" placeholder="ID de la partida">
+                <button id="btnUnirse" class="btn-warning">Unirse</button>
+            </div>
+        </div>
+
+        <div class="card hidden" id="tableroJuego">
+            <div class="header-partida">
+                <h3>Partida #<span id="lblPartidaId">---</span></h3>
+                <div class="marcador">
+                    Marcador: <span id="lblMarcador">0 - 0</span>
+                </div>
+            </div>
+            
+            <p class="instruccion">Elige tu jugada:</p>
+            
+            <div class="jugada-options">
+                <button class="btn-jugada" data-jugada="piedra">Piedra</button>
+                <button class="btn-jugada" data-jugada="papel">Papel</button>
+                <button class="btn-jugada" data-jugada="tijera">Tijera</button>
+            </div>
+
+            <div id="resultadoRonda" class="resultado-box"></div>
+        </div>
+
+        <div class="card">
+            <h3>Estado:</h3>
+            <div id="alertas" class="alert-box">Esperando identificación...</div>
+        </div>
+
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    
+    <script src="script.js"></script>
+
+</body>
+</html>
