@@ -197,6 +197,26 @@ const obtenerRanking = async (req, res) => {
     }
 }
 
+const obtenerPartidasPendientes = async (req, res) => {
+    try {
+        const partidas = await Partida.findAll({
+            where: {
+                estado: 'pendiente',
+                id_jugador2: null 
+            }
+        });
+
+        res.json({
+            partidas
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg: 'Error al obtener las partidas' });
+    }
+}
+
 export { crearPartida }
 export { hacerJugada }
 export { obtenerRanking }
+export { obtenerPartidasPendientes }
