@@ -1,6 +1,7 @@
 import { response, request } from 'express';
 import { Op } from 'sequelize';
 import { Partida } from '../models/index.js';
+import { Usuario } from '../models/index.js';
 
 const crearPartida = async(req = request, res = response) => {
     const { id_usuario, contra_maquina } = req.body; 
@@ -149,5 +150,53 @@ const hacerJugada = async (req = request, res = response) => {
     });
 }
 
+const obtenerRanking = async (req, res) => {
+    try {
+        const usuarios = await Usuario.findAll();
+
+        const ranking = [];
+
+        for (const usuario of usuarios) {
+            
+            const totalJugadas = await Partida.count({
+                where: {
+                    [Op.or]: [
+                        { id_jugador1: usuario.id },
+                        { id_jugador2: usuario.id }
+                    ],
+                    estado: 'finalizada'
+                }
+            });
+
+            const totalGanadas = await Partida.count({
+                where: {
+                    ganador_id: usuario.id
+                }
+            });
+
+            const porcentaje = totalJugadas === 0 ? 0 : (totalGanadas / totalJugadas) * 100;
+
+            ranking.push({
+                nombre: usuario.nombre, 
+                jugadas: totalJugadas,
+                ganadas: totalGanadas,
+                winRate: parseFloat(porcentaje.toFixed(2)) 
+            });
+        }
+
+        ranking.sort((a, b) => b.winRate - a.winRate);
+
+        res.json({
+            msg: 'Ranking calculado correctamente',
+            ranking
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg: 'Error al calcular el ranking' });
+    }
+}
+
 export { crearPartida }
 export { hacerJugada }
+export { obtenerRanking }
