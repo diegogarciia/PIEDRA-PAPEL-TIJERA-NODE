@@ -216,7 +216,42 @@ const obtenerPartidasPendientes = async (req, res) => {
     }
 }
 
+const unirsePartida = async (req, res) => {
+    const { id_partida, id_usuario } = req.body;
+
+    try {
+        const partida = await Partida.findByPk(id_partida);
+
+        if (!partida) {
+            return res.status(404).json({ msg: 'Partida no encontrada' });
+        }
+
+        if (partida.estado !== 'pendiente' || partida.id_jugador2 !== null) {
+            return res.status(400).json({ msg: 'No puedes unirte a esta partida (ya está llena o finalizada)' });
+        }
+
+        if (partida.id_jugador1 === id_usuario) {
+            return res.status(400).json({ msg: 'No puedes jugar contra ti mismo' });
+        }
+
+        partida.id_jugador2 = id_usuario;
+        partida.estado = 'jugando';
+        
+        await partida.save();
+
+        res.json({
+            msg: '¡Te has unido a la partida! Que empiece el juego.',
+            partida
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg: 'Error al unirse a la partida' });
+    }
+}
+
 export { crearPartida }
 export { hacerJugada }
 export { obtenerRanking }
 export { obtenerPartidasPendientes }
+export { unirsePartida }
