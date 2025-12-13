@@ -250,8 +250,43 @@ const unirsePartida = async (req, res) => {
     }
 }
 
+const abandonarPartida = async (req, res) => {
+    const { id_partida, id_usuario } = req.body;
+
+    try {
+        const partida = await Partida.findByPk(id_partida);
+
+        if (!partida) {
+            return res.status(404).json({ msg: 'Partida no encontrada' });
+        }
+
+        if (partida.estado === 'finalizada') {
+            return res.status(400).json({ msg: 'Esta partida ya había terminado' });
+        }
+
+        if (partida.id_jugador1 !== id_usuario && partida.id_jugador2 !== id_usuario) {
+            return res.status(401).json({ msg: 'No formas parte de esta partida' });
+        }
+
+        partida.ganador_id = (partida.id_jugador1 === id_usuario) ? partida.id_jugador2 : partida.id_jugador1;
+        partida.estado = 'finalizada';
+
+        await partida.save();
+
+        res.json({
+            msg: 'Has abandonado la partida. Tu rival gana por abandono.',
+            partida
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg: 'Error al abandonar la partida' });
+    }
+}
+
 export { crearPartida }
 export { hacerJugada }
 export { obtenerRanking }
 export { obtenerPartidasPendientes }
 export { unirsePartida }
+export { abandonarPartida }

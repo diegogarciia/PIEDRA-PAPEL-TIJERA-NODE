@@ -6,6 +6,7 @@ import { hacerJugada } from '../controllers/partidasController.js';
 import { obtenerRanking } from '../controllers/partidasController.js';
 import { obtenerPartidasPendientes } from '../controllers/partidasController.js';
 import { unirsePartida } from '../controllers/partidasController.js';
+import { abandonarPartida } from '../controllers/partidasController.js';
 
 const router = Router();
 
@@ -21,5 +22,7 @@ router.get('/ranking', obtenerRanking);
 router.get('/pendientes', obtenerPartidasPendientes);
 
 router.put('/unirse', unirsePartida);
+
+router.put('/abandonar', abandonarPartida);
 
 export default router;
